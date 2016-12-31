@@ -1,0 +1,63 @@
+<!doctype html>
+<html manifest='ko.appcache'>
+<head>
+  <!-- auto generated from  markdown/books.html -->
+  <meta charset='utf-8'>
+  <title> Knockout.js </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='build/styles.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.20.0/polyfill.js" integrity="sha384-BRxrkBiXXzRD1sMNIuDIVo9RvCASqWwEDVc3pvvQxniGYmuqOP9Y+skO6gUTQ8m4" crossorigin="anonymous"></script>
+  <script defer src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js" integrity="sha384-KgEy7s3ThYKule8wWiu2WJkm0AmJeSLkXku5PY5X8MhVgdm8K1ebsVRKHfNfWPrR" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" integrity="sha384-VnsErX2KfM7cLCRD1DEFKEJ+CnmVTjDNjZOCbxGEAkaRpyki67xRbGc9cKg4Dlm3" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-javascript.js" integrity="sha384-hTNKAUEfVFffvsJ8Vh9hxnEn57vrMv5+uzZOsKOrNpSbcKyxp/fmO/TI5adEigMM" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-html.js" integrity="sha384-AHD1el4WMYWGRDn4IUXiBPJhYBN2WX+p4DvihjOYFai7qlMthPildGpG+0oH4CBm" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-solarized_dark.js" integrity="sha384-sDBzoOXpWxAQI3RzZh6ghbf8tLl6gt835xswSmhYNvyeZ60URIo+zDB6+Z6nBFeq" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-solarized_light.js" integrity="sha384-lS7podMEtAx7Nsxr7uXn+Sx5PZKP2YGCOKb/W49E+EJFK/ctIk5BbL5lTxYupBwM" crossorigin="anonymous"></script>
+</head>
+<body data-bind='css.bound: true'>
+  <div class='headline'>
+    <img src="build/hourglass.gif" alt='Loading ...'/>
+    <div class='browser-version'>
+      Please ensure you are using the latest version of a modern
+      browser. If this page fails to load, you may still access
+      the <a href='http://knockoutjs.com'>legacy documentation site</a>.
+    </div>
+  </div>
+
+  <div style='display: none' data-bind='style.display: 'block''>
+    {{# template: 'header' /}}
+    <div class='main'>
+      {{# if: body }}
+        <h1>{{ title }}</h1>
+        <div data-bind='animatedTemplate: body' class='main-body'></div>
+      {{/if }}
+      {{# ifnot: body }}
+        <h1>Literature on Knockout</h1>
+        <div class='main-body'>
+<!-- /header -->
+<h2>Books</h2>
+
+<div class='pure-g book-list' data-bind='foreach: books'>
+  {{# template: &#39;book&#39; /}}
+</div>
+
+
+
+<p><em style='text-align: center; display: block;'>
+  <a href='https://github.com/knockout/knockout/issues/new'>
+    Let us know
+  </a>
+  if you think we are missing something!
+</em></p>
+<!-- footer -->
+        </div>
+      {{ /ifnot }}
+    </div>
+    {{# template: 'footer' /}}
+  </div>
+  <script defer src='build/libs.js'></script>
+  <script defer src='build/app.js'></script>
+</body>
+</html>

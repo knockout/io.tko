@@ -1,0 +1,56 @@
+{
+  "name": "knockout-gh-pages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "babel": {
+    "presets": ["es2015"]
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "colors": "^1.1.2",
+    "eslint": "^3.12.2",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-footer": "^1.0.5",
+    "gulp-front-matter": "^1.2.3",
+    "gulp-header": "^1.2.2",
+    "gulp-jsoncombine": "^1.0.2",
+    "gulp-less": "^3.0.3",
+    "gulp-load-plugins": "^1.0.0-rc",
+    "gulp-marked": "^1.0.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-sitemap": "^4.2.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-util": "^3.0.6",
+    "gulp-yaml": "^1.0.1",
+    "js-yaml": "^3.3.1",
+    "knockout-transformations": "^2.0.2",
+    "less-plugin-autoprefix": "^1.4.2",
+    "lodash": "^4.17.2",
+    "moment": "^2.17.1",
+    "opine.js": "^0.1.0",
+    "purecss": "^0.6.0",
+    "request": "^2.61.0",
+    "tko": "knockout/tko",
+    "vinyl-map": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://brianmhunt@github.com/brianmhunt/knockout.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brianmhunt/knockout/issues"
+  },
+  "homepage": "https://github.com/brianmhunt/knockout#readme"
+}
