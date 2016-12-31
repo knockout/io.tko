@@ -302,9 +302,11 @@ gulp.task("make:api", function () {
 })
 
 
-var REMAKE_TASKS = [
+const REMAKE_TASKS = [
   'make:templates', 'make:markdown', 'make:css', 'make:app', 'make:libs', 'make:examples', 'make:multipage', 'make:sitemap'
 ]
+
+gulp.task('make', REMAKE_TASKS)
 
 gulp.task('watch', REMAKE_TASKS, function () {
   gulp.watch(config.templates.src, ['make:templates'])
@@ -318,12 +320,15 @@ gulp.task('watch', REMAKE_TASKS, function () {
 })
 
 
-gulp.task('server', ['watch'], function () {
+gulp.task('server', function () {
   plugins.connect.server({
     port: 8900,
     root: './'
   })
 })
+
+
+gulp.task('default', ['watch', 'server'])
 
 
 gulp.on('err', function(e) {
