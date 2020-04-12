@@ -1,0 +1,568 @@
+<!DOCTYPE html><html lang="en"><head><title>TKO</title><meta charset="UTF-8"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css" integrity="sha256-akwTLZec/XAFvgYgVH1T5/369lhA2Efr22xzCNl1nHs=" crossorigin="anonymous"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><script src="https://unpkg.com/tko@4.0.0-alpha4a/dist/tko.js" integrity="sha384-MJ/drYzT5bwJWdFxjHRDTJHTNccRZb70G7rQ9GeBnrSW/ssr3+A0kA1Ul7IHBZ/Y" crossorigin="anonymous" type="application/javascript"></script><script src="https://production-assets.codepen.io/assets/embed/ei.js" type="application/javascript" async="async"></script><script src="tko-io.js" type="application/javascript" async="async"></script><style type="text/css">@import url('https://fonts.googleapis.com/css?family=Nunito|Pacifico|Source+Code+Pro');
+
+html,
+body {
+  /* Prevent scroll on narrow devices */
+  overflow-x: hidden;
+  font-family: 'Nunito', sans-serif;
+}
+
+body {
+  display: grid;
+  margin-top: 75px;
+  height: calc(100vh - 75px);
+
+  grid-template-columns: minmax(200px, max-content) auto;
+  grid-template-areas:
+    'sidebar main';
+}
+
+@media screen and (max-width: 991px) {
+  body {
+    grid-template-columns: auto;
+    grid-template-areas:
+      'sidebar'
+      'main';
+  }
+}
+
+a {
+  color: #590c12;
+  transition: 0.1s ease-in-out;
+}
+
+a:focus, a:hover, a:active {
+  color: #8e383c;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+main a {
+  border-bottom: 1px dashed #590c12;
+}
+
+td {
+  padding: 5px 1em;
+  border-bottom: 1px solid gray;
+}
+
+th {
+  padding: 5px 1em;
+  border-bottom: 1px solid black;
+}
+
+
+/* Codepen iFrames */
+iframe {
+  padding: 0px 1em;
+}
+
+
+/*
+ *       TOP - BAR
+ */
+.top-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-flow: column;
+  justify-content: center;
+  grid-column-gap: 24px;
+
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1200;
+  padding: 12px;
+
+  background-color: #931d0d;
+  font-family: Pacifico;
+}
+
+.top-bar a {
+  border-radius: 12px;
+  text-align: center;
+  padding: 0.25em 0.4em;
+  color: white;
+  font-size: 1.4rem;
+  text-shadow: 0 0 5px black;
+  line-height: 2.4rem;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.top-bar a:hover {
+  background-color: #00000080;
+  text-shadow: 0 0 5px #931d0d, 0 0 10px #931d0d;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.top-bar .tko {
+  color: white;
+  font-size: 1.6rem;
+  padding: 0.25em 0.4em;
+  text-shadow: 0 0 5px #efff6c, 0 0 10px #efff6c;
+}
+
+.current-page {
+  background-color: #00000040;
+}
+
+/**
+ *          SIDE-BAR
+ */
+.sidebar {
+  grid-area: sidebar;
+
+  height: calc(100vh - 75px);
+  /* Scrollable contents if viewport is shorter than content */
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0;
+  background-color: #efebe9;
+  border-right: 1px solid #efebe9;
+
+  padding: 4px 0.75em;
+}
+
+.toc {
+  position: sticky;
+}
+
+.sidebar a {
+  padding: 1ex 0.25rem;
+  color: #931d0d;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  color: black;
+  background-color: #FFaFaFB0;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.sidebar .section {
+  font-size: 1.2rem;
+}
+
+.sidebar .subheading {
+  padding: 0.6ex 8px;
+  font-weight: normal;
+  margin-left: 1rem;
+}
+
+ @keyframes popin {
+   from { transform: translateX(50%); }
+     to { transform: translateX(0%); }
+ }
+
+.sidebar .in-viewport::after {
+  position: absolute;
+  right: -22px;
+  background-color: #8F3F4F90;
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  content: ' ';
+  animation: 0.25s ease-in 0s popin;
+}
+
+/**
+ *          MAIN
+ */
+main {
+  grid-area: main;
+  height: calc(100vh - 75px);
+  background-color: #fcd4d4;
+  padding: 16px;
+  overflow: scroll;
+}
+
+h2, h3, h4 {
+  margin-top: 1.3em;
+  margin-bottom: 0.6em;
+}
+
+h2 {
+  font-weight: 800;
+}
+
+h3, h4, h2 time {
+  font-weight: 400;
+}
+
+h1 {
+  margin-top: 1.5em;
+}
+
+h1 code {
+  background-color: transparent;
+  border: 3px solid #E8D8D8;
+  font-size: inherit;
+}
+
+/**
+ *            CODE
+ */
+
+pre {
+  font-family: 'Source Code Pro', monospace;
+  background-color: #0a0909;
+  padding: 1ex 1em;
+  margin-left: 1em;
+  border-radius: 1px;
+  border: 1px black inset;
+}
+
+code {
+  background-color: #080707;
+  color: #e6c07b;
+  font-size: 0.9rem;
+}
+
+main code {
+  font-family: 'Source Code Pro', monospace;
+}
+
+code, td code {
+  white-space: nowrap;
+  padding: 2px 8px;
+}
+
+pre code {
+  color: #e6c07b;
+  white-space: pre; /* We want newlines to be newlines in code blocks */
+}
+
+/**
+ *
+ *        TITLES
+ *
+ */
+
+.section-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+
+
+
+
+/**
+ *         Source linking
+ */
+.source {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+  position: sticky;
+  top: 0px;
+}
+
+.source a {
+  padding: 2px 0.62em;
+  background-color: #E8D8D8;
+  border: 1px solid gray;
+}
+
+/**
+ *
+ *      BOOKS
+ *
+ */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-gap: 10px;
+  justify-content: space-around;
+}
+
+.book-grid .card {
+  width: 250px;
+}
+</style></head><body><nav class="top-bar" data-bind="highlightIfCurrent"><div class="tko">TKO</div><a href="/">Introduction</a><a href="/3to4">Knockout 3 to 4 Guide</a><a class="external" href="https://github.com/knockout/tko">Github</a></nav><nav class="sidebar"><div class="toc" id="toc" data-bind="each: contents"><a class="nav flex-column" href="#{{ navId }}" data-bind="template: { nodes: nodes }, class: css, click: click"></a></div></nav><main><div class="section"><div class="section-title">Knockout 3 to 4 Guide</div><div class="section-body"><span data-bind='source: "tko/docs/3to4.md"'></span>
+      <h1>Overview of the Differences</h1>
+<p>TKO is a fundamental change in the foundation of the code behind Knockout, representing the reverse engineering, compartmentalization, and reintegration of the original code that dates back to 2010.</p>
+<p>With this reengineering of Knockout into discrete pieces, it will be easier to update, build, and test the features of Knockout, as well as put the individual packages that make up Knockout to use in situations outside Knockout itself.</p>
+<p>To see the differences, have a look at the <a href="https://github.com/knockout/tko/blob/master/CHANGELOG.md">CHANGELOG.md</a>.</p>
+<h1>Version Comparison</h1>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>tko.js</th>
+<th>Knockout 4</th>
+<th>Knockout 3.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Browser compatibility</td>
+<td>Modern browsers (i.e. <a href="https://caniuse.com/#feat=proxy"><code>Proxy</code></a> support)</td>
+<td>Internet Explorer 9+</td>
+<td>Internet Explorer 6+</td>
+</tr>
+<tr>
+<td><code>ko.BindingHandler</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>observableArray.length</code></td>
+<td>Yes</td>
+<td>Browsers with <a href="https://kangax.github.io/compat-table/es6/#test-Array_is_subclassable_length_property_(accessing)">Array subclass</a> support <a href="http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/#wrappers_prototype_chain_injection">More info</a></td>
+<td>No</td>
+</tr>
+<tr>
+<td>iterable <code>observableArray</code></td>
+<td>Yes</td>
+<td>Browsers with <a href="https://kangax.github.io/compat-table/es6/#test-Symbol">Symbol support</a></td>
+<td>No</td>
+</tr>
+<tr>
+<td>event <code>throttle</code> / <code>debounce</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>ko.Component</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>applyBindings</code> returns <code>Promise</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Polyfills included</td>
+<td>None</td>
+<td>Up to ES6</td>
+<td><code>Object.prototype.bind</code></td>
+</tr>
+<tr>
+<td><code>ko.proxy</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h1>Build System</h1>
+<p>TKO has a complete build system rewrite and a conversion of the code from a concatenation of source files to discrete ES6 modules with <code>import</code> and <code>export</code> statements.  This process has been complex and taken years, with the result being a Knockout with a strong foundation of discrete reusable components.</p>
+<p>Knockout 4 and TKO will be maintained at the new monorepo <a href="https://github.com/knockout/tko">knockout/tko</a> on GitHub.  Knockout 3.x will continue to be maintained at <a href="https://github.com/knockout/knockout">knockout/knockout</a>.</p>
+<p>TKO now uses standard tools like <code>lerna</code> and <code>yarn</code>, and employs <a href="https://standardjs.com/">StandardJS</a> for code style — though all the old code is not yet updated to StandardJS yet.</p>
+<h1>Test System</h1>
+<p>Knockout 3 used Jasmine 1 to perform tests.  Some packages in TKO continue to use Jasmine 1, while others now use Mocha.</p>
+<h2>Backwards compatibility and 💥 breaking changes</h2>
+<p>We’ve strived to have backwards compatibility, and the numerous test cases we’ve run it through have been successful.  A key value of Knockout has been and remains the comprehensive test cases that enforce performance to a predictable standard, and TKO meets all the tests that were enforced on Knockout 3.x, notwithstanding a few issues:</p>
+<ul>
+<li>The <code>function</code> no longer works in <code>data-bind</code>, having been replaced by lambdas, so <code>data-bind='click: function () { x++ }'</code> will have to be replaced by e.g. <code>data-bind='click: =&gt; x++'</code></li>
+<li>The <code>data-bind</code> is now interpreted by a LL compiler (based on <a href="https://github.com/brianmhunt/knockout-secure-binding">knockout-secure-binding</a>), so some edge case parsing issues may crop up</li>
+</ul>
+<h2>Browser support</h2>
+<p>Knockout 4 and TKO and the underlying packages will start support from IE9 forward.  We aim to test Knockout across all browsers from this point forward.</p>
+<p>If you need IE6, 7, and 8 support you may prefer to keep using the Knockout 3.x line, or be prepared for workarounds or missing functionality.</p>
+<h1>Options</h1>
+<ul>
+<li>(options) Allow importing <code>ko</code> in node</li>
+<li>various new <a href="https://github.com/knockout/tko.utils/blob/master/src/options.js"><code>options</code></a></li>
+</ul>
+<h1>Utilities</h1>
+<ul>
+<li>
+<p>(utils) Several array utilities use native functions now (<code>arrayPushAll</code>, <code>arrayFilter</code>, <code>arrayGetDistinctValues</code>, <code>arrayFirst</code>, <code>arrayIndexOf</code>)</p>
+</li>
+<li>
+<p>The <code>throttle</code> and <code>debounce</code> utilities now pass arguments to the target functions</p>
+</li>
+<li>
+<p>utils</p>
+<ul>
+<li>utils.domNodeDisposal is now exposed as domNodeDisposal</li>
+<li>arguments to setHtml that are functions are called (not just observables)</li>
+<li>cleanExternalData now exposed in domNodeDisposal.otherNodeCleanerFunctions</li>
+</ul>
+</li>
+<li>
+<p>error handling</p>
+<ul>
+<li>onError no longer throws if overloaded; default function is to re-throw.</li>
+<li>error is thrown when an extender is not found</li>
+</ul>
+</li>
+</ul>
+<h1>Life Cycles</h1>
+<ul>
+<li>(internal) Add the ES6 LifeCycle class (see tko.lifecycle)</li>
+</ul>
+<h1>Observables</h1>
+<ul>
+<li>(observable) When supported, <code>observable.length</code> will now be undefined (was <code>0</code> before), and <code>observableArray.length</code> will now be the length of the wrapped array</li>
+<li>(observableArray) <code>observableArray</code> is now iterable (has a <code>Symbol.iterator</code> property)</li>
+<li>(subscribable) Add the <code>once</code>, <code>then</code>, <code>when</code>, <code>yet</code>, and <code>next</code> functions</li>
+</ul>
+<h1>Components</h1>
+<ul>
+<li>(components) Warn with custom-element names that cannot be used with custom elements re. #43 &amp; knockout/knockout#1603</li>
+<li>(components) Add <code>ko.Component</code>, an abstract base class that simplifies the Component creation and registration API (see <code>tko.utils.component/src/ComponentABC.js</code>)</li>
+<li>(components) Add <code>getBindingHandler(key)</code> to use binding handlers local to a component</li>
+</ul>
+<p>Components can control their binding handlers.</p>
+<h2>ko.Component example</h2>
+<p data-height="490" data-theme-id="dark" data-slug-hash="XzNONW" data-default-tab="js,result" data-user="Knockout" data-embed-version="2" data-pen-title="Commented ko.Component" data-editable="true" class="codepen">See the Pen <a href="https://codepen.io/team/Knockout/pen/XzNONW/">Commented ko.Component</a> by Knockout (<a href="https://codepen.io/Knockout">@Knockout</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<h1>Bindings</h1>
+<ul>
+<li>
+<p>(binding) <code>ko.applyBindings</code> now returns a Promise that resolves when bindings are completed</p>
+</li>
+<li>
+<p>(binding handlers) Add new-style ES6 Binding Handler class (see custom-bindings documentation and tko.bind/src/BindingHandler.js), descended from the LifeCycle class</p>
+</li>
+<li>
+<p>(bind) String errors on binding are now propagated</p>
+</li>
+</ul>
+<h2>Binding Handlers and ko.BindingHandler</h2>
+<p>In TKO, binding handlers can be either an <code>object</code>, a <code>function</code> or a descendant of <code>ko.BindingHandler</code>.  The following are all valid binding handlers:</p>
+<pre><code class="language-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ko</span>.<span class="hljs-title">BindingHandler</span> </span>{
+    <span class="hljs-keyword">constructor</span> ({$element, valueAccessor, allBindings, $context, onError}) {
+        <span class="hljs-comment">/*
+          this.value is valueAccessor()
+          this.value(x) is valueAccessor(x);
+          if valueAccessor() is observable or a property, it will be set properly.
+        */</span>
+    }
+
+    get controlsDescendants () { <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>|<span class="hljs-literal">false</span> }
+
+    get bindingComplete () {
+        <span class="hljs-comment">/* overload where binding is asynchronous. See e.g. Component binding*/</span>
+    }
+    <span class="hljs-keyword">static</span> get allowVirtualElements () { <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>|<span class="hljs-literal">false</span> }
+}
+
+handler_fn = <span class="hljs-function">(<span class="hljs-params">element, valueAccessor, allBindings, viewModel, bindingContext</span>) =&gt;</span> { <span class="hljs-comment">/* ... */</span> }
+
+the_knockout_3_way = {
+    init (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        <span class="hljs-comment">/* ... */</span>
+    },
+
+    update (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        <span class="hljs-comment">/* ... */</span>
+    },
+
+    <span class="hljs-attr">allowVirtualElements</span>: <span class="hljs-literal">true</span>|<span class="hljs-literal">false</span>
+}
+
+<span class="hljs-comment">// Virtual Elements may be permitted for a binding explicitly.</span>
+virtualElements.allowedBindings[handler_name] = <span class="hljs-literal">true</span>|<span class="hljs-literal">false</span>
+</code></pre>
+<p>Binding handlers can be registered in the following ways:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Globally, where NewHandler is a BindingHandler descendant.</span>
+NewHandler.registerAs(<span class="hljs-string">'handler'</span>)
+
+<span class="hljs-comment">// Globally, for any handler type.</span>
+ko.bindingHandlers.set(handler_name: handler)
+
+<span class="hljs-comment">// Knockout 3.x style</span>
+ko.bindingHandlers[handler_name] = handler
+
+<span class="hljs-comment">// For a component</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> </span>{
+    getBindingHandler(bindingKey) {
+        <span class="hljs-keyword">if</span> (bindingKey === handler_name) { <span class="hljs-keyword">return</span> handler }
+        <span class="hljs-comment">// Alternatively:</span>
+        <span class="hljs-comment">// return { bindingKey[bindingKey]: handler }[bindingKey]</span>
+    }
+}
+</code></pre>
+<h2>Parsing</h2>
+<ul>
+<li>(parser) Fix interpretation of unicode characters as identifiers / variables</li>
+<li><code>==</code> and <code>===</code> use <code>===</code> for comparison (same for <code>!=</code> and <code>!==</code>); fuzzy equality ~== / ~!= for the evil twins</li>
+<li>Knockout 4 will work with a Content Security Policy that prohibits unsafe-eval.
+<ul>
+<li>add “naked” <code>=&gt;</code> lambdas (even in legacy browsers e.g. <code>data-bind='click: =&gt; was_clicked(true)'</code></li>
+<li>inline functions are no longer supported (e.g. <code>data-bind='click: function (){...}'</code> will fail)</li>
+<li>No longer uses <code>with</code> statements</li>
+<li>No longer uses <code>eval</code>/<code>new Function</code></li>
+</ul>
+</li>
+</ul>
+<h2>Namespacing</h2>
+<ul>
+<li>incorporate punches namespacing i.e. <code>data-bind='event.click: =&gt; thing(true)'</code> is equivalent to <code>data-bind='event: {click: =&gt; thing(true)}'</code></li>
+</ul>
+<h2>Attribute Interpolation</h2>
+<h2>Text Interpolation</h2>
+<ul>
+<li>incorporate punches <code>{{ }}</code> and <code>{{{}}}</code> text and attribute interpolation</li>
+</ul>
+<h2>Event</h2>
+<ul>
+<li>(<code>event</code> binding) Add object-based event handler e.g. <code>event.click: { handler: fn, once: true, capture: true, bubble: false, passive: false}</code>.  Also, bubbling can be prevented with <code>event.click: {bubble: false }</code> re #32</li>
+<li>(<code>event</code> binding) Add <code>throttle</code> and <code>debounce</code> parameters</li>
+</ul>
+<h2>With</h2>
+<ul>
+<li>(with binding) Fix dependency count for function-arguments [knockout/knockout#2285]</li>
+</ul>
+<h2>Attr</h2>
+<ul>
+<li>(attr) Support namespaced attributes with <code>attr</code> binding #27</li>
+</ul>
+<h2>Foreach</h2>
+<ul>
+<li>Use tko.binding.foreach for the <code>foreach</code> binding (based on brianmhunt/knockout-fast-foreach)</li>
+<li>Add <code>each</code> as an alias of <code>foreach</code></li>
+<li>Rewritten as O(1)</li>
+<li>(foreach binding) When using the <code>as</code> parameter, the <code>$data</code> remains unchanged (i.e. the context inside a <code>foreach</code> is no longer a “child” context, but an extension of the current context); this deprecates the <code>noContext</code> parameter</li>
+<li>(foreach binding) Expose the <code>conditional</code> on the <code>domData</code> for use by the <code>else</code> binding (when the array is empty, the <code>else</code> binding will be rendered)</li>
+<li>(foreach binding) Expose <code>$list</code> inside the foreach</li>
+<li>(foreach binding) Allow <code>noIndex</code> as a peer binding parameter (e.g. <code>foreach: items, noIndex: true</code>)</li>
+<li>(foreach) Preserve focus when items are deleted and re-added (i.e. moved) in the same animation frame.</li>
+</ul>
+<h2>Template</h2>
+<ul>
+<li>Make the <code>template</code> binding expose a conditional for else-binding</li>
+<li>support template literals (``) in bindings (even in legacy browsers)</li>
+<li>add the <code>@</code> prefix operator that calls/unwrap functions (i.e. <code>obs()()</code> is the same as <code>@obs</code>)</li>
+</ul>
+<h2>If / Else</h2>
+<ul>
+<li>add <code>&lt;!-- else --&gt;</code> inside the <code>if</code> binding, and add an <code>else</code> binding (following the brianmhunt/knockout-else plugin)</li>
+<li>Add <code>else</code> binding</li>
+<li>Add <code>unless</code> binding</li>
+</ul>
+<h2>Using</h2>
+<h2>Hidden</h2>
+<ul>
+<li>add <code>hidden</code> binding (knockout/knockut#2103)</li>
+</ul>
+<h2>HTML</h2>
+<p>The HTML binding now works in virtual elements. Based on ko.punches.</p>
+<h2>Filtering</h2>
+<p>Filters can be applied to modify values in bindings. Based on ko.punches.</p>
+<h1>Deprecated</h1>
+<ul>
+<li>Template binding options are deprecated</li>
+<li>expressionWriting (twoWayBinding)</li>
+<li>‘.’ in binding handler names</li>
+<li>jsonExpressionRewriting (expressionRewriting)</li>
+<li>form parsing</li>
+<li><code>bind</code> shim</li>
+<li>ko.utils.parseJson</li>
+<li>getFormFields</li>
+<li>fieldsIncludedWithJsonPost</li>
+<li>postJson</li>
+</ul>
+</div></div></main></body></html>

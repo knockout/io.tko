@@ -1,0 +1,339 @@
+<!DOCTYPE html><html lang="en"><head><title>TKO</title><meta charset="UTF-8"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css" integrity="sha256-akwTLZec/XAFvgYgVH1T5/369lhA2Efr22xzCNl1nHs=" crossorigin="anonymous"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><script src="https://unpkg.com/tko@4.0.0-alpha4a/dist/tko.js" integrity="sha384-MJ/drYzT5bwJWdFxjHRDTJHTNccRZb70G7rQ9GeBnrSW/ssr3+A0kA1Ul7IHBZ/Y" crossorigin="anonymous" type="application/javascript"></script><script src="https://production-assets.codepen.io/assets/embed/ei.js" type="application/javascript" async="async"></script><script src="tko-io.js" type="application/javascript" async="async"></script><style type="text/css">@import url('https://fonts.googleapis.com/css?family=Nunito|Pacifico|Source+Code+Pro');
+
+html,
+body {
+  /* Prevent scroll on narrow devices */
+  overflow-x: hidden;
+  font-family: 'Nunito', sans-serif;
+}
+
+body {
+  display: grid;
+  margin-top: 75px;
+  height: calc(100vh - 75px);
+
+  grid-template-columns: minmax(200px, max-content) auto;
+  grid-template-areas:
+    'sidebar main';
+}
+
+@media screen and (max-width: 991px) {
+  body {
+    grid-template-columns: auto;
+    grid-template-areas:
+      'sidebar'
+      'main';
+  }
+}
+
+a {
+  color: #590c12;
+  transition: 0.1s ease-in-out;
+}
+
+a:focus, a:hover, a:active {
+  color: #8e383c;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+main a {
+  border-bottom: 1px dashed #590c12;
+}
+
+td {
+  padding: 5px 1em;
+  border-bottom: 1px solid gray;
+}
+
+th {
+  padding: 5px 1em;
+  border-bottom: 1px solid black;
+}
+
+
+/* Codepen iFrames */
+iframe {
+  padding: 0px 1em;
+}
+
+
+/*
+ *       TOP - BAR
+ */
+.top-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-flow: column;
+  justify-content: center;
+  grid-column-gap: 24px;
+
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1200;
+  padding: 12px;
+
+  background-color: #931d0d;
+  font-family: Pacifico;
+}
+
+.top-bar a {
+  border-radius: 12px;
+  text-align: center;
+  padding: 0.25em 0.4em;
+  color: white;
+  font-size: 1.4rem;
+  text-shadow: 0 0 5px black;
+  line-height: 2.4rem;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.top-bar a:hover {
+  background-color: #00000080;
+  text-shadow: 0 0 5px #931d0d, 0 0 10px #931d0d;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.top-bar .tko {
+  color: white;
+  font-size: 1.6rem;
+  padding: 0.25em 0.4em;
+  text-shadow: 0 0 5px #efff6c, 0 0 10px #efff6c;
+}
+
+.current-page {
+  background-color: #00000040;
+}
+
+/**
+ *          SIDE-BAR
+ */
+.sidebar {
+  grid-area: sidebar;
+
+  height: calc(100vh - 75px);
+  /* Scrollable contents if viewport is shorter than content */
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0;
+  background-color: #efebe9;
+  border-right: 1px solid #efebe9;
+
+  padding: 4px 0.75em;
+}
+
+.toc {
+  position: sticky;
+}
+
+.sidebar a {
+  padding: 1ex 0.25rem;
+  color: #931d0d;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  color: black;
+  background-color: #FFaFaFB0;
+  transition: 0.4s background-color ease-in-out;
+}
+
+.sidebar .section {
+  font-size: 1.2rem;
+}
+
+.sidebar .subheading {
+  padding: 0.6ex 8px;
+  font-weight: normal;
+  margin-left: 1rem;
+}
+
+ @keyframes popin {
+   from { transform: translateX(50%); }
+     to { transform: translateX(0%); }
+ }
+
+.sidebar .in-viewport::after {
+  position: absolute;
+  right: -22px;
+  background-color: #8F3F4F90;
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  content: ' ';
+  animation: 0.25s ease-in 0s popin;
+}
+
+/**
+ *          MAIN
+ */
+main {
+  grid-area: main;
+  height: calc(100vh - 75px);
+  background-color: #fcd4d4;
+  padding: 16px;
+  overflow: scroll;
+}
+
+h2, h3, h4 {
+  margin-top: 1.3em;
+  margin-bottom: 0.6em;
+}
+
+h2 {
+  font-weight: 800;
+}
+
+h3, h4, h2 time {
+  font-weight: 400;
+}
+
+h1 {
+  margin-top: 1.5em;
+}
+
+h1 code {
+  background-color: transparent;
+  border: 3px solid #E8D8D8;
+  font-size: inherit;
+}
+
+/**
+ *            CODE
+ */
+
+pre {
+  font-family: 'Source Code Pro', monospace;
+  background-color: #0a0909;
+  padding: 1ex 1em;
+  margin-left: 1em;
+  border-radius: 1px;
+  border: 1px black inset;
+}
+
+code {
+  background-color: #080707;
+  color: #e6c07b;
+  font-size: 0.9rem;
+}
+
+main code {
+  font-family: 'Source Code Pro', monospace;
+}
+
+code, td code {
+  white-space: nowrap;
+  padding: 2px 8px;
+}
+
+pre code {
+  color: #e6c07b;
+  white-space: pre; /* We want newlines to be newlines in code blocks */
+}
+
+/**
+ *
+ *        TITLES
+ *
+ */
+
+.section-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+
+
+
+
+/**
+ *         Source linking
+ */
+.source {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+  position: sticky;
+  top: 0px;
+}
+
+.source a {
+  padding: 2px 0.62em;
+  background-color: #E8D8D8;
+  border: 1px solid gray;
+}
+
+/**
+ *
+ *      BOOKS
+ *
+ */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-gap: 10px;
+  justify-content: space-around;
+}
+
+.book-grid .card {
+  width: 250px;
+}
+</style></head><body><nav class="top-bar" data-bind="highlightIfCurrent"><div class="tko">TKO</div><a href="/">Introduction</a><a href="/3to4">Knockout 3 to 4 Guide</a><a class="external" href="https://github.com/knockout/tko">Github</a></nav><nav class="sidebar"><div class="toc" id="toc" data-bind="each: contents"><a class="nav flex-column" href="#{{ navId }}" data-bind="template: { nodes: nodes }, class: css, click: click"></a></div></nav><main><div class="section"><div class="section-title">Introduction</div><div class="section-body"><span data-bind='source: "tko/docs/intro.md"'></span>
+      <div class='alert alert-danger text-center'>
+	<h5>This webpage is a work in progress.</h5>
+</div>
+<h1>What is TKO?</h1>
+<p>TKO is a Javascript web framework, and the foundation for Knockout 4.</p>
+<p>Knockout helps you create rich, responsive, maintainable applications built on a clean underlying data model.</p>
+<ul>
+<li><strong>Simple data-html bindings</strong>
+Easily associate DOM elements with model data using a concise, readable syntax, like this: <code>&lt;input data-bind='textInput: value'/&gt;</code></li>
+<li><strong>Two-way observables</strong>
+Data model and DOM stay in sync, updating the UI whenever the data changes.</li>
+<li><strong>Computed dependencies</strong>
+Create chains of calculated variables dependencies.</li>
+<li><strong>Templating</strong>
+Create reusable components and sophisticated web applications.</li>
+<li><strong>Extensible</strong>
+Implement custom behaviours and compartmentalized code.</li>
+</ul>
+<p>TKO has a comprehensive suite of tests that ensure its correct functioning and allow easy verification on different Javascript browsers and platforms.</p>
+<h2>Sponsors</h2>
+<p>Support Knockout:</p>
+<a class='btn btn-primary btn-lg btn-block' href='https://patreon.com/brianmhunt'>
+	via Patreon to Brian M Hunt
+</a>
+<h2>First Example</h2>
+<p data-height="465" data-theme-id="dark" data-slug-hash="jarpvY" data-default-tab="html,result" data-user="brianmhunt" data-embed-version="2" data-pen-title="Knockout.js First Example" class="codepen">See the Pen <a href="https://codepen.io/brianmhunt/pen/jarpvY/">Knockout.js First Example</a> by Brian M Hunt (<a href="https://codepen.io/brianmhunt">@brianmhunt</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<!-- tutorial -->
+<h2>Supported Platforms</h2>
+<p>TKO &amp; Knockout should work on all modern, and many antiquated browsers, as well as Javascript engines such as Node.js.</p>
+<h2>Getting started</h2>
+<p>Include <em>alpha-3</em> with this <code>&lt;script&gt;</code>:</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/tko@4.0.0-alpha3/dist/ko.js"</span>
+<span class="hljs-attr">integrity</span>=<span class="hljs-string">"sha384-W6Un9ta1JSOmCbK7YkdGGfyu+fDGY5e0II5CCyMKKXaYrpiJAt2q5YQH2ICQi4QA"</span>
+<span class="hljs-attr">crossorigin</span>=<span class="hljs-string">"anonymous"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<p>or install the monorepo it locally with one of</p>
+<pre><code class="language-bash">$ npm install tko
+$ yarn add tko
+</code></pre>
+<p>Clone the code with</p>
+<pre><code class="language-bash">$ git <span class="hljs-built_in">clone</span> git@github.com/knockout/tko
+</code></pre>
+<h1>Community</h1>
+<p>Find Knockout online at:</p>
+<ul>
+<li><a href="https://gitter.im/knockout/tko">Gitter knockout/tko</a></li>
+<li><a href="https://gitter.im/knockout/knockout">Gitter knockout/knockout</a></li>
+<li><a href="https://www.reddit.com/r/knockoutjs/">Reddit /r/knockoutjs</a></li>
+<li><a href="https://groups.google.com/forum/#!forum/knockoutjs">Google Groups</a></li>
+<li><a href="http://stackoverflow.com/tags/knockout.js/info">StackOverflow [knockout.js]</a></li>
+</ul>
+
+<h1>Books</h1><div class="book-grid"><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=ZPDnoQEACAAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;imgtk=AFLRE717dECAVjOpJblfNu0EPHVMBQmgOOan5rn21GWN2OQhSbPiehsljCYRsxdJQ1wcejFwt0wBmNnRraYQUHHWPqjrHJW0kRSrXjobRrKukJDD-hhmn5DWwNGA--8nQVITS2vbv8t6&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">Knockout.js</h4><h6 class="mb-2 card-subtitle">Building Dynamic Client-Side Web Applications</h6><p class="card-text">By Jamie Munro, published 2015-01-03</p><a class="card-link" href="https://books.google.ca/books/about/Knockout_js.html?hl=&amp;id=ZPDnoQEACAAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=try8oQEACAAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;imgtk=AFLRE71KQ8fmuM2sSfN0TOooxRRz51cBqbN-oSufwl2TKH6qSzuzhI_Sarc_I5dMWgvbKB1SmWvA3IREW1ByGHSRAnTsybrM8B4LxCKEjavv9Zq2VxVBR3pweSl2UWtLe4Oav0m5_S5G&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">Asp.net Mvc 5 With Bootstrap and Knockout.js</h4><h6 class="mb-2 card-subtitle">Building Dynamic, Responsive Web Applications</h6><p class="card-text">By Jamie Munro, published 2015-03-25</p><a class="card-link" href="https://books.google.ca/books/about/Asp_net_Mvc_5_With_Bootstrap_and_Knockou.html?hl=&amp;id=try8oQEACAAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=A-iuCQAAQBAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;edge=curl&amp;imgtk=AFLRE72rh8mTdqUnmJDjLIi1wLaea_frTsNMmKGHxTa2lID6PyuW_qNH_XzvkxqDVn3QEa2LfnTsvAmj6Vq_Wd73Zl4Q9_gIQA0lmIwRfK0Zr17YFHAV9uSx-9q5bTOOepwmRpwG3fbG&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">Getting Started with Knockout.js for .NET Developers</h4><h6 class="mb-2 card-subtitle"></h6><p class="card-text">By Andrey Akinshin, published 2015-05-27</p><a class="card-link" href="https://books.google.ca/books/about/Getting_Started_with_Knockout_js_for_NET.html?hl=&amp;id=A-iuCQAAQBAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=BoqbBQAAQBAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;edge=curl&amp;imgtk=AFLRE70GS42a68O_DBLirScLduiYOUbk80jGntqSuuykg8RU1usaN5xdHy5Gl13pgEb2LdZYZ7b5sYtt4qmedX1FiwDuhbprf-X1ADNLHolZCVletNeHvoUvy0gFKPplc4eopBGHQnPG&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">Mastering KnockoutJS</h4><h6 class="mb-2 card-subtitle"></h6><p class="card-text">By Timothy Moran, published 2014-11-26</p><a class="card-link" href="https://books.google.ca/books/about/Mastering_KnockoutJS.html?hl=&amp;id=BoqbBQAAQBAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=dZN1BQAAQBAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;edge=curl&amp;imgtk=AFLRE71zzDoAJ8_68JqPI9sZ3Tlvyhyqxiyi_z0QwpVpjChRp5YC3bKNGiUBlDLThbtmQ3uIdVes5uGumrDrmUPlvGA_3PSqev9ZbCwthmLIjwEisbAwI1z2nJNzqwSHb7b-8uEekpvB&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">Web App Testing Using Knockout.JS</h4><h6 class="mb-2 card-subtitle"></h6><p class="card-text">By Roberto Messora, published 2014-11-17</p><a class="card-link" href="https://books.google.ca/books/about/Web_App_Testing_Using_Knockout_JS.html?hl=&amp;id=dZN1BQAAQBAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=HEXfBgAAQBAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;edge=curl&amp;imgtk=AFLRE72iT2HkL3gawhD9TqH0Ozcj5SZW5bchxnpKvWAjxtYdxh8HcnIKbul_cXzv6zK-EDmZh5QY29qCYf-JQQEGU6sjiaaVSoeGbbezRI32UgWJNVpiPu6kd2aeMSZa5Vamelt0nAda&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">KnockoutJS Essentials</h4><h6 class="mb-2 card-subtitle"></h6><p class="card-text">By Jorge Ferrando, published 2015-02-27</p><a class="card-link" href="https://books.google.ca/books/about/KnockoutJS_Essentials.html?hl=&amp;id=HEXfBgAAQBAJ">More Information</a></div></div><div class="card"><img class="card-img-top" src="https://books.google.ca/books/content?id=5ljTBgAAQBAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;edge=curl&amp;imgtk=AFLRE709pFQ7H1gOnU-LAndEX0z9bqHUPQAi5rRoYbighr68U9tTN7ONHq8sgiLrkmhFBO5isUK3dKydyNM1aWDgk4FqErfk2DSbjC2T_jd7nfsnQzXHcFCVEcD3rLNxV7n0pegmMoEy&amp;source=gbs_api" alt="Book cover image" style="width: 120px; margin: auto;"/><div class="card-body text-center"><h4 class="card-title">KnockoutJS Blueprints</h4><h6 class="mb-2 card-subtitle"></h6><p class="card-text">By Carlo Russo, published 2015-02-25</p><a class="card-link" href="https://books.google.ca/books/about/KnockoutJS_Blueprints.html?hl=&amp;id=5ljTBgAAQBAJ">More Information</a></div></div></div></div></div></main></body></html>
